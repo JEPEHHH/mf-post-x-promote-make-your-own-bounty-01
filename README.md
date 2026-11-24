@@ -8,19 +8,37 @@ Entri ini menyiapkan program deterministik Node.js 22 (`main.ts`, standard libra
 
 ## Struktur Berkas
 
-- `main.ts` — entrypoint Node.js 22 (stdlib only) yang memvalidasi dan menyalin `POST.json` ke `MAKEFUN_OUTPUT_DIR` (default `/output`).
+- `main.ts` — entrypoint Node.js 22 (stdlib only) yang memvalidasi ukuran (`<= 16384` byte), struktur JSON, serta pola URL X (`x.com` / `twitter.com`, termasuk `/i/web/status/<id>`, dan menolak ID post milik make.fun `2124915864336236646`), lalu menyalin `POST.json` secara deterministik ke `MAKEFUN_OUTPUT_DIR` (default `/output`).
 - `POST.json` — alamat post publik X peserta (`{"url": "https://x.com/<handle>/status/<id>"}`).
-- `LICENSE` — lisensi MIT (OSI-approved).
-- `assets/post-draft.md` — draf teks post X dan checklist syarat gate.
-- `assets/post-image.png` — gambar orisinal untuk dilampirkan langsung pada post X.
+- `LICENSE` — lisensi MIT (`SPDX-License-Identifier: MIT`).
+- `test/main.test.ts` — unit test berbasis `node:test` (stdlib only) untuk validasi URL, batas ukuran, mode `--strict`, dan determinisme dua kali eksekusi.
+- `assets/post-draft.md` — draf teks post X (Opsi Quote Post dan Opsi Post Baru dengan tautan) beserta checklist gate & anti-diskualifikasi.
+- `assets/post-image.png` — gambar orisinal 1376x768 PNG untuk dilampirkan langsung pada post X.
 
-## Menjalankan Secara Lokal
+## Menjalankan & Menguji Secara Lokal
 
 Prasyarat: Node.js 22.18 atau lebih baru.
 
 ```bash
-mkdir -p out
-MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
+# Jalankan unit test
+node --test test/main.test.ts
+
+# Jalankan program dua kali & pastikan output identik byte-per-byte
+mkdir -p out/run1 out/run2
+MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out/run1 node main.ts
+MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out/run2 node main.ts
+cmp out/run1/POST.json out/run2/POST.json
 ```
 
-Program ini deterministik: menjalankan perintah di atas dua kali menghasilkan berkas `out/POST.json` yang identik byte-per-byte.
+Setelah mengganti placeholder di `POST.json` dengan URL post X yang sudah tayang, jalankan validasi ketat sebelum submit:
+
+```bash
+MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts --strict
+```
+
+## Langkah Publikasi & Submit
+
+1. Ambil play code peserta (`makefun-<kata1>-<kata2>-<kata3>`) setelah login/register via CLI kit.
+2. Publikasikan 1 post publik di X menggunakan draf di `assets/post-draft.md` dan lampirkan `assets/post-image.png` secara langsung.
+3. Masukkan URL post (`https://x.com/<handle>/status/<id>`) ke `POST.json`, lalu jalankan `node main.ts --strict` dan `node --test test/main.test.ts`.
+4. Commit perubahan, bundle transkrip sesi agen dengan `makefun.mjs bundle`, verifikasi dengan `makefun.mjs check --transcripts transcripts.tar.gz`, lalu submit sebelum `2026-11-26T18:35:00Z`.

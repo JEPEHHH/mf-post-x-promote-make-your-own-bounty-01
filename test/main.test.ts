@@ -116,21 +116,17 @@ test("validatePostBuffer enforces byte cap, JSON shape, and strict mode", () => 
 test("run writes byte-identical POST.json across repeated executions", () => {
   const workDir = mkdtempSync(join(tmpdir(), "makefun-post-x-"));
   try {
-    const botDir = join(workDir, "bot");
     const out1 = join(workDir, "out1");
     const out2 = join(workDir, "out2");
 
     const sampleUrl = "https://x.com/entrant_demo/status/2125000999888777666";
     const warnings: string[] = [];
 
-    // Write valid POST.json with extra whitespace to test deterministic serialization
     writeFileSync(
-      join(workDir, "input.tmp"),
+      join(workDir, POST_FILENAME),
       `{\n  "url": "  ${sampleUrl}  "\n}\n`,
       "utf8",
     );
-    const inputContent = readFileSync(join(workDir, "input.tmp"));
-    writeFileSync(join(workDir, POST_FILENAME), inputContent);
 
     const res1 = run({
       botDir: workDir,
@@ -153,7 +149,7 @@ test("run writes byte-identical POST.json across repeated executions", () => {
     const bytes2 = readFileSync(join(out2, POST_FILENAME));
     assert.equal(Buffer.compare(bytes1, bytes2), 0);
     assert.equal(bytes1.toString("utf8"), `{"url":"${sampleUrl}"}\n`);
-    assert.ok(botDir.length > 0);
+    assert.ok(bytes1.byteLength <= MAX_POST_BYTES);
   } finally {
     rmSync(workDir, { recursive: true, force: true });
   }
