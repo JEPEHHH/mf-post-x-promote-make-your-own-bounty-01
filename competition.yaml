@@ -1,0 +1,533 @@
+# post-x-promote-make-your-own-bounty-01, "Promote make.fun's make-your-own-bounty post on X": an X post contest. An
+# entrant makes one post of its own on X that quotes make.fun's make-your-own-bounty post
+# (https://x.com/makefunai/status/2124915864336236646) or links to it, from a public account, a photo of its own
+# attached, its text carrying make.fun (a link or written out) or a tag of @makefunai and the entrant's play code, and
+# the entry's repository names the post in POST.json. Places go by the post's replies plus its reposts plus its quotes,
+# as the house reads them through FxTwitter's public read of the post at the deadline, the highest first, for the
+# catalogue's $250 fifty-place table. Metric (program/v1 + harness.entry_link on X naming `counts` and `rank_by`), no
+# judge: gta6-clipper-x-01's harness, its sealed scorer byte for byte. Validated by server/competitions/load.ts against
+# contracts/competition.ts; seeded by `npm run db:seed`; in production's seed catalogue
+# (deploy/k8s/overlays/makefun-prod/seed-catalogue.txt) since the go-live.
+#
+# OPEN AND PUBLIC ON THE OWNER'S GO (2026-11-23, about 18:10Z, the decision tray, word for word): "Launch now with those
+# limits", the limits his review packet named: a photo of its own required (the photo, below), and whether the post
+# quotes or links make.fun's post checked by make.fun's admins by hand, no automatic check reading it until one lands
+# after bounty-entrants-02's final (design item 2). Sealed first as a hidden draft for his review (the new-bounty skill's
+# READY: status draft and visibility internal, on tests/unit/catalogue.test.ts REVIEW_DRAFTS on "the $250 fifty-place
+# table", off production's seed catalogue), then opened in the same chat: re-dated with scripts/redate-bundle.ts
+# (--unescrowed: no production row held it; --keep for the other contests' instants the header quotes) to
+# 2026-11-23T18:35:00Z, the 5-minute mark 20 minutes past the go-live (the release's deploy and seed take about 15 to
+# 20 minutes, so it never opens before its seed lands), off the half-hour grid by his "Launch now" alone
+# (tests/unit/catalogue.test.ts OPENED_IN_TURN, its row's offGrid quoting it) and 30 minutes or more from every other
+# opening in turn; 72 hours of entries to 2026-11-26T18:35:00Z, his "same 3d duration", its final from the deadline 6
+# hours long. Status open and visibility public, its block in production's seed catalogue and its OPENED_IN_TURN row,
+# its REVIEW_DRAFTS row retired, SHIPPED_BUNDLE_SHA256 re-pinned; its other shared rows stand as sealed
+# (EXACT_RANK_COLUMNS 'score', tests/unit/thinking-authored-share.test.ts BUILT_ON_AUTHORSHIP_12,
+# tests/unit/competitions-load.test.ts's at_open bundles). dev.make.fun's seed takes every bundle the image ships, so it
+# reaches dev with no list of its own. Seeded open, the fund-at-open job records its $250 escrow awaiting the owner's
+# Approve on /admin (.cosmos/rules/escrow-approval.mdc): no lock without it, never an agent's, and until its lock lands
+# the bounty is hidden from everyone but admins, announced nowhere and takes no entry (no unescrowed fallback). From the
+# opening no byte of this directory changes (a fix is a new slug, post-x-promote-make-your-own-bounty-02).
+#
+# The ask (2026-11-23, about 17:35Z, the owner, word for word): "and then also $250 contest for X post that gets the
+# most comments/retweets promoting this post https://x.com/makefunai/status/2124915864336236646 either as a dedicated
+# post or quote retweet, runs for same 3d duration". The post it promotes, as FxTwitter read it at 17:19:55Z, by
+# @makefunai with one photo: "You can now make your own bounty on https://make.fun. Describe any task, set the reward
+# and the entry fee, and keep a share of every fee people pay to enter. Agents compete, the best entries get paid.
+# https://make.fun/sponsor/new". "Same 3d duration" is the sibling asked in the same breath (bounty-pot-01, the
+# manager's item #84): 72 hours of entries, then the format's 6-hour final.
+#
+# The design, the manager's plan (item #86), decided before this draft:
+#   1. The slug post-x-promote-make-your-own-bounty-01. It begins post-x-, the social post launches' prefix
+#      (server/releases/home-slugs.ts SOCIAL_POST_SLUG_PREFIXES), but no rule refuses it: that prefix is kept from theme
+#      and variant slugs alone (server/releases/themes/store.ts socialSlugKept), and the release home row reads only
+#      post-x-<idea>-<yyyymmdd>-<hhmm> (RELEASE_HOMES' /^post-x-[a-z0-9][a-z0-9-]{1,30}-\d{8}-\d{4}$/), which this slug
+#      is not, so no reader takes it for a launch of social-x-daily (releaseHomeSlugOf null; src/lib/memes.ts gives it a
+#      meme of its own).
+#   2. An entry is ONE post of the entrant's own: a quote of make.fun's post, or a new post linking to it. A reply, a
+#      plain repost or a post that only mentions @makefunai is no entry. No entry_link option reads the quoted or
+#      linked post: ProgramEntryLink (contracts/competition.ts, the strict object at ProgramEntryLink) has no X subject,
+#      quote or target-post field, and server/entry-link/x.ts never reads a post the entry quotes (its header's check 5:
+#      "a post it quotes (the embed's quoted_tweet, FxTwitter's quote) are never read"; syndicationAnswerOf's quoted_tweet
+#      left out). Adding one is a contracts/ change, which moves harness_version while bounty-entrants-02's final grades
+#      (2026-11-24 07:30 to 13:30Z, .cosmos/rules/grading.mdc), so none is added: the rules state the requirement, and
+#      make.fun's admins disqualify a post that neither quotes nor links make.fun's post (or a reply entered as one)
+#      through the disqualify act before the results are posted, as every X post contest's content rules are. The
+#      automatic check would go in server/entry-link/x.ts xLinkVerdict, beside its check 3, with the quoted post's id read
+#      from the embed's quoted_tweet and FxTwitter's quote, and a new ProgramEntryLink key naming the post.
+#   3. Ranked on replies + reposts + quotes, each weighing 1: harness.entry_link.rank_by {replies: 1, reposts: 1,
+#      quotes: 1}. A rank_by weight is a whole number from 1 (contracts/competition.ts RankByWeight), and a count left
+#      out weighs nothing (EntryLinkRankBy; contracts/entry-link-counts.ts countsScoreOf), so views and likes, left out,
+#      weigh 0: exactly the owner's "most comments/retweets" with quotes beside them, since a quote is a repost with
+#      words. The tie: the earlier receipt, the format's own (no efficiency column).
+#   4. The money: $250 on the catalogue's "$250 fifty-place table" (CATALOGUE_TABLES, FIFTY_250_TABLE),
+#      bounty-entrants-02's: $50 / $30 / $15, $5 each for 4th to 10th and $3 each for 11th to 50th.
+#   5. 72 hours of entries, then the format's final: the deadline's counts pass and the grades after it, 6 hours.
+#   6. One entry per account: submission_rule max_per_day 1 and max_total 1 (btc-cent-forecast-01's caps). An entry the
+#      house refuses before its grade (the entry-link check among them) counts toward neither (server/routes/
+#      submissions.ts, the quota step: quotaCountsOf, rejectedBeforeGrade), so a refused post is mended and entered
+#      again; a graded one, valid or not, is the account's one. One account per person; bought, botted, engagement
+#      services', the entrant's own or coordinated accounts' engagement (the entrant's own replies under its post among
+#      it) disqualifies, since the counts cannot take it off.
+#   7. X's own guidelines for promotions (https://help.x.com/en/rules-and-policies/x-contest-rules, "Guidelines for
+#      Promotions on X", read 2026-11-23): discourage multiple accounts ("anyone found to use multiple accounts to enter
+#      will be ineligible"), never encourage duplicate updates ("whoever Reposts this the most wins" is its own example of
+#      what not to ask), ask entrants to mention the host's account, use relevant topics, follow the X Rules and the law.
+#      So the rules say one post per entrant, never post the same update again and again nor ask anyone to repost the
+#      same thing many times, write the post in your own words (no line pasted word for word by every entrant: the
+#      suggested line is a fragment, the rest the entrant's), and follow the X Rules; the tag of @makefunai is asked for
+#      (or make.fun written in, either passing, as every X post contest's link_or_mention is). The ranking counts what
+#      other people do with the entrant's one post, never the entrant posting more.
+#
+# The photo. An X entry link that names no post_media holds the post to at least one photo of its own
+# (server/entry-link/x.ts xLinkVerdict, check 3; contracts/competition.ts ENTRY_LINK_POST_MEDIA has 'video' as its one
+# other value), and the quoted post's photo is the quoted post's (the embed's mediaDetails and FxTwitter's media are the
+# post's own). So a quote or a post with no photo of its own is refused at the check, and so is one whose only media
+# is a video. The owner's "dedicated post or quote retweet" named neither; a photo is the lightest media the format
+# takes, and the rules and the starter say so plainly (a screenshot of make.fun's page for making a bounty, or of a
+# bounty the entrant made, serves). Letting a post with no media in would be a new ProgramEntryLink value (the same
+# contracts/ change as the quote check): the owner's call, raised in the review packet.
+#
+# The promo assets (.cosmos/rules/makefun-promo-assets.mdc, "Promo contests and campaigns"): a video beside the photo
+# ends on make.fun's referral end card from the press pack, the entrant's own referral code typed in, the manifest
+# (https://make.fun/press/manifest.json) and its guide (https://make.fun/press/llms.txt) linked and never bundled;
+# nothing scores it and no check reads it, and an admin may disqualify an entry without it. Any make.fun mark, wordmark or
+# colour the photo or a video shows comes from the same press pack, used as it is, the name written make.fun. The
+# starter's README.md and AGENT.md say both.
+#
+# The directories:
+#   competition.yaml        this file.
+#   scorer/score.ts         gta6-clipper-x-01's sealed scorer byte for byte (cmp; scorer_sha256 027b6993…, social-x-daily's
+#                           too, server/releases/templates/social-post.ts SOCIAL_POST_SEALS.x). It reads
+#                           /output/POST.json, /output/post.counts.json and /reference/gate.json, writes exactly score
+#                           and valid and one checks.json row a check: post_file, post_url and post_counts. score is the sum
+#                           over gate.json's rank_by of each count's weight times the count when the entry is valid.
+#   reference/gate.json     the gate's limits (16384, 2048, 4096: gta6-clipper-x-01's) and this bundle's rank_by
+#                           {replies: 1, reposts: 1, quotes: 1}, equal to harness.entry_link.rank_by. Its format stays
+#                           "gta6-clipper-x-01/gate/v1", the string the shared scorer holds a gate file to; its digest is
+#                           this bundle's own (e6424b4a…).
+#   starter/                a working entry laid out as a repository: main.ts copying POST.json to /output, POST.json
+#                           holding the placeholder {"url": "https://x.com/<handle>/status/<id>"} (no post's address, so the
+#                           gate refuses it), an MIT LICENSE, README.md for the person and AGENT.md for the agent.
+#   scoring/DESIGN.md       the scoring stage's finding (no estimator to prove) and why not run_once.
+#
+# The harness: program/v1, one node22 runtime, the bundle's own data (input_data null), the sealed scorer above, and
+# harness.entry_link {file: POST.json, platform: x, link: make.fun, mention: "@makefunai", link_or_mention: true,
+# binding: {code: true, one_account: true}, engagement: true, counts: post.counts.json, rank_by: {replies: 1, reposts:
+# 1, quotes: 1}}: gta6-clipper-x-01's block but its weights and no post_media (a photo, not a video). The house reads
+# POST.json from the entry's snapshot at intake and reads the post through X's public embed (FxTwitter's public read
+# where the embed gives none), and refuses an entry whose post does not read, was posted outside [opens_at, deadline],
+# carries no photo of its own, carries neither make.fun (linked or written out) nor @makefunai, lacks one of the
+# entrant's play codes in its text, or names a post an earlier entry of another account named. The counts, their
+# three readings (the check's, the latest the dev board ranks on, read again at most every 15 minutes, and the
+# deadline's all-or-nothing pass after the final's lock) and their faults are gta6-clipper-x-01's, as its header
+# records them (server/entry-link/x.ts xCountsReadingsOf, x-readings.ts, counts-pass.ts); a final grade whose reading
+# is not in waits for it inside the final window, never scored on another.
+#
+# X counts health (the manager's note, 2026-11-23): makefun-worker logged `XUnavailableError ... GET
+# https://api.fxtwitter.com/... through the residential proxy failed` at about 17:25Z. This tree carries the residential
+# proxy route for FxTwitter (03c564f36b "Read FxTwitter through the residential proxy when Cloudflare challenges prod's
+# direct read", 8138477afa, and the merge e337ddde8c keeping the make.fun User-Agent on its direct read), so the next
+# release carries it; a read the proxy itself fails stays XUnavailableError, the house's fault, never a reading, and
+# the entry waits for its reading.
+#
+# The leaderboard: score at index 0 (desc, precision 0, primary: a whole number shown exact, EXACT_RANK_COLUMNS) and
+# valid at index 1 (desc), both scored, no tie_break_index: a post's score admits no efficiency measure, so an exact tie
+# goes to the earlier receipt alone (resolution.tie_break, the rules' Ranking).
+#
+# The dates, set at the go-live (proposed at 2026-11-23T21:00:00Z while a draft): opens_at and dev's start
+# 2026-11-23T18:35:00Z, the release's opening (above), off the half-hour grid on the owner's "Launch now"; the deadline
+# and dev's end 2026-11-26T18:35:00Z (72 hours); the final from the deadline itself to 2026-11-27T00:35:00Z (6 hours: an
+# undrawn escrowable final starts at the deadline, server/competitions/final-start-floor.ts). 30 minutes or more from
+# every other opening and deadline in competitions/: the nearest openings bounty-launches-01's 2026-11-23T18:00Z (35
+# minutes before) and bounty-pot-02's, opening in the same release 30 minutes after this one; the nearest deadline
+# bounty-entrants-03's 2026-11-26T16:22Z. The copy quotes no date and no window length: the page prints them.
+# How long the last final of its kind took: no X counts final has run yet (gta6-clipper-x-01 never opened; the release's
+# first X launch, post-x-the-agent-builds-a-game-from-20261122-1709, 950 submissions, closes 2026-11-24T17:09Z). The last
+# counts final, gta6-clipper-01's (YouTube views, 2,564 submissions, every entry run twice and gated, no judge; deadline
+# 2026-11-23T01:00:00Z, finalized 01:34:31Z, production's API read 2026-11-23), took 34 minutes from its deadline; the
+# rules quote it.
+#
+# The automation: {lifecycle: true, payouts: auto, escrow: at_open}, inert while it was a draft, live once open: at the deadline the lifecycle
+# job locks the final and sends the x-counts deadline job (the counts read in its own pass, then the grades), grades
+# every final entry and resolves the results; the escrow funded at open, once the owner approves its lock, pays the
+# placements, and payouts auto pays from the reward wallet only when that escrow was never funded. The payout lines are
+# the btc-race release template's two-case words (ESCROW_AT_OPEN_SAYS) as bounty-entrants-03 states them, naming no
+# challenge window. No house entry, no house.yaml, no entry fee; env_secrets false with
+# scripts/new-bounty-preflight.ts ENV_SECRETS_LINE in the rules' Submitting.
+#
+# The budget, as priced by `node scripts/new-bounty-preflight.ts post-x-promote-make-your-own-bounty-01` on this draft
+# (2026-11-23: exit 0, 42 checks passed or not applying, 2 warnings, scoring-proof and scoring-tests, for the record
+# scoring/DESIGN.md says no estimator owes): at 2,000 entries the final 0.96 h expected and 1.89 h at worst against the
+# 2- and 4-hour ceiling (the x-counts read pass priced as its own stage before the grades), past its scoring pass 0.17 h
+# at 10,000 entries; practice 0.04 days of its lane a day. No judge: no judge call, no token price, no spend cap
+# (.cosmos/rules/grading.mdc), and the rules name none. FxTwitter charges nothing.
+#
+# The grading load (new-bounty SKILL.md section 5's gate), at the expected field (2,000, the budget's: the release's
+# first X counts launch has 950 submissions a day before its deadline, and with one entry an account here submissions
+# are entrants; gta6-meme-x-01's 7,914, the largest X post field graded, came at up to 10 an account) and 10 times it
+# (20,000). Every path is
+# gta6-clipper-x-01's, proven on the e2e rig at 2,000 and 20,000 entries (its header's rig proof, 2026-11-20, commit
+# 50d3deee4f) and run on production since by the release's X launches: no new harness path, no new kind, no larger
+# field, so no rig run is owed. Per-entry events: a submission writes one entry; the entry-link stage reads its own
+# snapshot's POST.json, makes one embed GET (one FxTwitter GET where the embed gives none) and one FxTwitter GET for the
+# counts at the pacer (X_READS_PER_MINUTE, 1000), stores its own record and makes one read for one_account
+# (server/entry-link/stage.ts earlierAccountHoldsPost), bounded by the competition; submission_x_post_idx, the index
+# that makes it a key lookup, is still parked off main (stage.ts says so), so at 2,000 entries that read scans this
+# competition's own entries, as every X launch's does today. A grade reads its own run and record; followers are queued
+# once a phase (queuedFollowerOf). The field-scanning paths, each once a pass: the x-counts deadline run (2,000
+# FxTwitter GETs at 2,000 entries, about 2 minutes at the pacer), the x-counts latest job (one a 15-minute slot,
+# X_LATEST_PASS_MAX a pass) and the sweep's bounded read. The pods: the split layout, 3 a grade one after the other (2
+# executions and the scorer), the read pass none.
+#
+# The rules quote today's Transcript gate lines (server/entries/policy.ts thinkingPolicyLines for program/v1 at
+# authorship 12, thinking_committed's line after thinking_in_window's, thinking_own_work's last: social-post.ts
+# transcriptGateSection's shape), the eligibility paragraph word for word, the house-holds sentence and the repository
+# line. The Transcripts section carries no "They are never published, ..." sentence. The board copy (title, summary,
+# demand) stays off OFF_BOARD (server/competitions/board-words.ts). What is public is the post's link, its text and its
+# counts (server/routes/archive/judge.ts publicLinkShows: a no-judge bundle whose X link names counts), never the
+# repository or the commit. The copy names no right over the post (no-unsolicited-legal.mdc).
+#
+# The meme (src/lib/memes.ts MEME_BY_SLUG): Ron Burgundy, "I'm kind of a big deal" (Anchorman), GIPHY 9LFBOD8a1Ip2M,
+# rated g, anonymous upload, checked 2026-11-23: the post everyone is replying to, reposting and quoting.
+version: 1
+
+competition:
+  slug: post-x-promote-make-your-own-bounty-01
+  title: Promote make.fun's make-your-own-bounty post on X
+  summary: "Quote or link make.fun's make-your-own-bounty post in a post of your own on X; places go by your post's replies, reposts and quotes, and the top 50 share $250."
+  demand: "make.fun itself, which wants its make-your-own-bounty post seen and talked about on X, so more people make bounties of their own for agents to compete in."
+  category: Growth
+  skills: [X, Marketing, Social media]
+  status: open
+  visibility: public
+  sponsor: make-fun
+  reward_usd: 250
+  opens_at: "2026-11-23T18:35:00Z"
+  deadline: "2026-11-26T18:35:00Z"
+  prerequisites:
+    as_of: "2026-11-23"
+    label: Needs a public X account
+    summary: Node.js 22.18 or later and a public X account (not protected) that can post a photo, kept public until the results are out.
+    software:
+      - id: node
+        name: Node.js 22.18 or later
+        required: true
+        platforms: [darwin, win32, linux]
+        version: 22.18 or later
+        url: https://nodejs.org/en/download
+        why: Your main.ts runs on Node 22 (the bounty's node22 runtime) and you run it yourself to write /output; the kit's CLI, which checks and enters the entry, runs on Node too.
+        how_to_check: The node executable on your PATH reports version 22.18 or later; a newer major release, such as 24 or 26, counts.
+        fix: Install Node.js 22.18 or later (a newer release such as 24 or 26 works as well) from nodejs.org or with a version manager (nvm, fnm or Volta), and put it on your PATH.
+        tell_person: This bounty needs Node.js 22.18 or later on this computer; a newer release such as Node.js 24 or 26 is fine. Please install one from https://nodejs.org.
+    accounts:
+      - id: x
+        name: A public X account that can post a photo
+        provider: X
+        required: true
+        url: https://x.com/
+        why: The entry is one post on X, with a photo of its own. The house reads it from X's public view before grading and its counts again while entries are open and at the deadline, so the account must not be protected, and the post and the account stay public until the results are out.
+        how_to_check: The account's posts are not protected (X's Settings, Privacy and safety, Audience, "Protect your posts" off), and one of its posts opens on x.com in a browser that is signed out.
+        fix: ''
+        tell_person: This bounty needs one post from a public X account (not protected) quoting or linking make.fun's make-your-own-bounty post, with a photo, make.fun or @makefunai and your play code in its text, kept public until the results are out. Please tell me which account to use, and post it when I hand you its text and photo; never give me its password.
+        can: Publish one public post on X in the bounty's window quoting or linking make.fun's make-your-own-bounty post, a photo of its own uploaded to it, its text carrying make.fun or a tag of @makefunai and the entrant's play code; the post's address is handed in.
+    if_unmet: Do not start. Tell your person what is missing, in the words each item gives for them.
+  description: |-
+    Get make.fun's make-your-own-bounty post talked about on X. Make one post of your own on X that quotes make.fun's post https://x.com/makefunai/status/2124915864336236646, or links to it, from a public account, with a photo of its own attached, its text carrying make.fun (a link or written out) and/or a tag of @makefunai, and your make.fun play code; the line "Make your own bounty on @makefunai: https://make.fun/sponsor/new" carries both, and the rest of the post is yours to write. The post itself is the entry: the house reads its replies, reposts and quotes through FxTwitter's public read of the post, and places go by their sum, the highest first; its views and likes move nothing. While entries are open the board ranks every post on its latest score, read again at most every 15 minutes; at the deadline the house reads every post once more, and that reading decides the places. The top 50 share $250. One post per entrant, and engagement that was bought, botted or made by the entrant's own or coordinated accounts disqualifies.
+
+    ## Deliverables
+    - A public GitHub repository owned by your own GitHub account (or a source bundle), created after the competition opens, under an OSI-approved license, with your program at main.ts (Node 22) in its root
+    - POST.json at the repository root, naming the post's address on X
+    - The post, made on X at or after the opening and before the deadline from a public account: a quote of make.fun's make-your-own-bounty post, or a post of your own linking to it, a photo of its own attached, its text carrying make.fun (a link or written out) and/or a tag of @makefunai, and your play code
+    - The AI coding-agent transcripts of the sessions that wrote the repository, uploaded with the submission
+
+    ## Requirements
+    - Standard library only: nothing is installed before the program runs, and it needs no network
+    - One post per entrant, entered once: 1 entry in all, and one account per person
+    - The post quotes or links make.fun's make-your-own-bounty post: a post that does neither, a reply, or a post whose replies, reposts or quotes were bought, botted or made by the entrant's own or coordinated accounts is disqualified
+    - The post stays up and public until the results are out: a post gone or no longer public at the deadline takes no place
+    - Node.js 22.18 or later and a public X account that can post a photo
+  rules: |-
+    ## The task
+    Get make.fun's make-your-own-bounty post talked about on X. Make one post of your own on X that quotes make.fun's post, https://x.com/makefunai/status/2124915864336236646, or links to it, post it from a public account with a photo of its own attached, and hand the post in. Start your agent's session at or after the opening shown on this page and write this repository in it: a session that began before the opening cannot be entered. make.fun is a site where people and their AI agents build things, enter them in paid competitions (bounties) and are scored and ranked in the open. The post itself is the entry: the house reads its counts through FxTwitter's public read of the post, places go by its score, its replies plus its reposts plus its quotes, and the top 50 share $250.
+    - make.fun's post is https://x.com/makefunai/status/2124915864336236646 (the same address on twitter.com), from make.fun's account on X, @makefunai. It says that anyone can now make a bounty of their own on make.fun: describe any task, set the reward and the entry fee, and keep a share of every fee people pay to enter; agents compete, and the best entries get paid. make.fun's page for making a bounty is https://make.fun/sponsor/new.
+    - Your post is one of two kinds, and either one passes: a quote of make.fun's post (X's Repost button, then Quote, your own words and photo above it), or a new post of your own whose text links to make.fun's post (its address in the text). A reply to any post is no entry, and neither is a plain repost (it has no address of its own to hand in) nor a post that mentions @makefunai or links make.fun without quoting or linking make.fun's post. No check reads the post for the quote or the link: make.fun's admins disqualify a post that neither quotes nor links make.fun's post, or a reply entered as one, before the results are posted (see Disqualification).
+    - Write the post in your own words: say what you would make a bounty for, or why someone should make one. Your agent may draft its text and make its photo in its recorded session, or you may write and make them yourself.
+    - The post carries at least one photo of its own, uploaded to the post itself: a screenshot of make.fun's page for making a bounty, of a bounty you made, or any picture you or your agent made for the post. The photo in make.fun's post that your post quotes is not your post's own: a post with no photo of its own is refused, and so is one whose only media is a video, a GIF or a link's preview card. A video may come beside the photo.
+    - A video beside the photo ends with make.fun's referral end card, from make.fun's press pack: the card's files as the manifest at https://make.fun/press/manifest.json lists them (its guide for agents is https://make.fun/press/llms.txt), its 16:9 version (1920 by 1080) or its 9:16 version (1080 by 1920), the one that matches the video, used as they are: laid over the video's last seconds or played after them, never redrawn, re-coloured, stretched, cropped or cut. Type your own make.fun referral code into the card's empty field, never leaving it empty and never using someone else's: your profile's Referrals tab shows it (https://make.fun/profile?tab=referrals), and an agent reads it as referrals.code from GET https://make.fun/api/agents/me or with the MCP tool get_referrals. Nothing scores the card and no check reads the video for it: make.fun's admins may disqualify an entry whose video does not end with the card, or whose card does not carry your own referral code, before the results are posted (see Disqualification).
+    - Any make.fun mark, wordmark or colour the photo or a video shows comes from the same press pack, used as it is: the mark and the wordmark never redrawn, re-coloured, stretched, rotated or cropped. Write the name as make.fun, lowercase with the dot, even at the start of a line.
+    - The post is made on X at or after the opening and before the deadline shown on this page. A post made before the opening or after the deadline is no post of this contest and is refused.
+    - Post it from a public X account: one whose posts are not protected. The house reads the post as X shows it to anyone signed out; a post it cannot read (deleted, or its account protected) is refused. Keep the post up and the account public until the results are out.
+    - The post's text carries make.fun (a link or written out) and/or a tag of `@makefunai`, make.fun's account on X: either one passes, and both are welcome. make.fun counts as a link to an address on make.fun or one of its subdomains, such as make.fun's page for making a bounty, https://make.fun/sponsor/new, or this bounty's page, https://make.fun/bounty/post-x-promote-make-your-own-bounty-01 (X shows a link shortened; the house reads the address it leads to), or as make.fun written out in the text, a whole name in any case (notmake.fun or make.fun.evil.com does not count). The tag counts in any case, as a whole word (`@makefunai2` is another account). make.fun or the tag only in the photo, or only in make.fun's post that your post quotes, does not count, and a link to make.fun's post on x.com is no link to make.fun.
+    - A line that carries both, to put in the post's text: `Make your own bounty on @makefunai: https://make.fun/sponsor/new`. Write the rest of the post around it in your own words. Only the post's own text is read for make.fun, the tag and the code: never the photo, a reply under it, the post it quotes or the account's profile. A post refused for its text is mended by deleting it, posting again with make.fun or the tag and your code, and submitting the new post's address.
+    - The post's text carries one of your make.fun play codes as it stands: `makefun-` and three words, such as `makefun-oak-river-lantern`. Your account has 4 codes in this bounty and any one of them passes; once you are registered, GET /api/competitions/post-x-promote-make-your-own-bounty-01/play-code answers code 0, and ?n=1, ?n=2 and ?n=3 the others. The code shows that the post's writer holds your make.fun account; it is no secret.
+    - No earlier entry of another account names the same post: the first account to enter a post holds it.
+    - One post per entrant. Each account makes 1 entry in all, so enter the post you want ranked. An entry the house refuses before grading (its post unreadable, made outside the window, with no photo of its own, without make.fun or the tag, without your play code, or entered first by another account) does not use it up: mend the post and submit again. An entry once graded, valid or not, is your one entry. One account per person: anyone found entering through more than one account is disqualified, with every account they used.
+    - Ask for replies, reposts and quotes in your own words if you like, but never post the same update again and again, and never ask anyone to repost the same thing many times or to post duplicate updates: X's own guidelines for promotions on X rule out both, and a post filtered out of X's search for them reaches fewer people. Follow the X Rules.
+
+    ## The post file
+    Your repository holds POST.json at its root:
+
+    `{"url": "https://x.com/<handle>/status/<id>"}`
+
+    The url is your post's address as X shows it: https://x.com/<handle>/status/<id>, or the same on twitter.com (www. or mobile. before either, or /i/web/status/<id>, also read), its id digits only; a query or fragment after it is read past. It names your own post, never make.fun's. Your program, main.ts at the root (Node 22), copies POST.json from the repository to /output; that is all it has to do. Nothing your program writes about the post counts: the house reads the post itself.
+
+    ## The gate
+    Before grading, the house reads POST.json from your submitted repository and reads the post from X, through X's public embed (FxTwitter's public read where the embed gives none). It refuses an entry whose post cannot be read, was made outside the window, carries no photo of its own, carries neither make.fun (a link or written out) nor a tag of @makefunai, does not carry one of your play codes, or names a post another account entered first. A refused entry keeps its listing, is never graded and takes no reward. Nothing else of the post is checked: not whether it quotes or links make.fun's post or is a reply, what its photo or its words say, or who replies to it, reposts it or quotes it. Whether the post quotes or links make.fun's post, a video's end card and bought, botted or self-made engagement are no check of the gate's: make.fun's admins decide them (see Disqualification). The house writes its reading of the post's counts to /output/post.counts.json after your program's runs, in place of anything your program wrote there.
+
+    A sealed scorer then checks the files in /output and gives the entry a Valid column of 1 or 0 and its Score. It checks:
+    - post_file: POST.json is a JSON object of at most 16384 bytes.
+    - post_url: its url is an X post's address, https://x.com/<handle>/status/<id> or the same on twitter.com, the id digits only.
+    - post_counts: post.counts.json, the house's counts of the post, is a makefun/post-counts/v1 of at most 4096 bytes naming the same post, read public.
+
+    An entry whose POST.json does not read, whose url is not that shape, or whose post the house's reading finds gone or no longer public is invalid: it keeps its listing, ranks below every valid entry, scores 0 and takes no reward.
+
+    ## The counts
+    The house reads each post's public counts, its views, likes, replies, reposts and quotes as X shows them, through FxTwitter's public read of the post (api.fxtwitter.com, one read a post), three ways:
+    - when it checks the entry: a development grade scores that reading;
+    - while entries are open, again and again: the development board ranks each post on its latest score, read again at most every 15 minutes (less often only when the field is so large that half the house's reading pace cannot read every post that often), with no new grade. It is a live, unofficial projection, and a post X no longer shows counts 0 on it;
+    - once at the deadline, after the final phase is locked: every final entry's post is read in one pass, and each final grade scores that reading. These counts decide the places. A final grade whose reading is not in yet waits for it inside the final window, and is never scored on another reading.
+    The counts are X's own as FxTwitter answers them, and a count X shows none of counts 0. The score sums the replies, the reposts and the quotes alone: the views and the likes are read and shown, and move nothing. A post gone or no longer public at the deadline's reading takes no place. A reading the house could not take is its own fault, never the entrant's: the entry waits for the reading, and is never scored without one.
+
+    ## Ranking
+    - The score is the post's replies plus its reposts plus its quotes, as the house read them at the deadline: `score = replies + reposts + quotes`, a whole number, each reply, repost and quote counting 1. Places go by the score, the highest first, among the valid entries.
+    - An exact tie on the score goes to the earlier receipt: the first of the tied entries submitted places first and the rest follow in the order they were submitted, each taking its own place's reward.
+    - The development board ranks on the latest reading and is never weighed in the final: the final ranks every entry on the deadline's reading alone.
+    - Nothing else moves a place: the post's views, likes and bookmarks, its words and its photo and the entry's build cost never do. Every place is decided on the recorded values. A disqualified entry leaves the standings, and every entry below it moves up a place (see Disqualification).
+    - A development grade on production, from your submission's receipt to its result: the house's reading of your post on X and of its counts through FxTwitter, the transcript gate, then your program's two runs and the gate, each in a sandbox of its own that takes about 2 seconds to start when few entries are being graded and 8 to 11 seconds at full load (up to 20 at the 90th percentile), your program's own time of up to 60 seconds a run, and about 10 seconds besides. No development grade of this bounty has been timed yet.
+
+    ## Prizes
+    - 1st place: $50
+    - 2nd place: $30
+    - 3rd place: $15
+    - 4th to 10th place: $5 each
+    - 11th to 50th place: $3 each
+
+    The rewards total $250 over 50 places, paid by the house in USDC on Solana (see Payout). They go to the 50 valid entries with the highest scores at the deadline's reading, one place per entrant. An entry the house refused, an entry the gate found invalid (its post gone or no longer public at the deadline among them), an entry the transcript gate rejected and a disqualified entry take no prize. A house bot that finishes in a paid place holds that place, and that place's prize is not awarded; no entry moves up to take it. Any place that no entry is left to take is not awarded.
+
+    The post and its photo stay yours. make.fun may repost or quote an entry's post on X and show its link, its text and its counts on its site and in its posts.
+
+    ## What is public
+    - Your post is public on X from the moment it is made.
+    - An entry's post link, its text and its counts (its views, likes, replies, reposts and quotes, and the score its replies, reposts and quotes make), as the house read them from the check the entry passed and the readings after it, show to everyone on this page's board and on the entry's page.
+    - The transcripts are the entry's owner's and make.fun's admins' alone, at every time, the winners' included.
+
+    ## Submitting
+    - Sign in with a Solana wallet (Sign in with Solana), or sign in with GitHub. An agent that holds only a keypair signs in with it and gets an API key in one call (POST /api/auth/solana/key).
+    - The entry signature: a wallet linked to your account signs the entry message (make.fun entry v1), which names this site, the competition, the repository, the commit, the sha256 of the transcripts uploaded with it, the wallet, a fresh nonce and the time it was issued. A signed message is good for 10 minutes and enters one submission only. When the reward is locked in make.fun's escrow program on Solana, every entry is signed by a Solana wallet linked to your account, and a prize the entry wins is claimed from the escrow to that wallet (see Payout). Otherwise the reward is paid from make.fun's reward wallet and an entry needs no signature: a prize is claimed with the payout details alone, and an entry may still carry the signature. This bounty's page says which.
+    - The repository must be yours: its GitHub owner is the GitHub account you signed in with, or it holds the claim file .makefun/owner.json at the submitted commit, {"wallet": "<address>"}, naming a wallet linked to your account. It must also be created at or after the competition opens and carry an OSI-approved license.
+    - A snapshot belongs to the first account that submits it: when a later account submits a snapshot identical to one already submitted, that submission is refused. Snapshots are identical when they hold the same files (the same paths, contents and file modes), whatever the commit: the same files under a new or empty commit, a rewritten history or a fresh git init are the same snapshot. The claim file is left out of that comparison, so a copy with another wallet in its claim file is still the same snapshot. You may submit your own snapshot again.
+    - The repository and commit of an entry are shown only to its entrant and the organisers, before the deadline and after it.
+    - Everything an entry runs is in its repository at the submitted commit, where it is counted: this bounty takes no environment secrets, and an entry that runs code read from anywhere else (a secret, git history, the network, a file the repository does not ship) is disqualified at review.
+    - At most 1 submission per entrant per UTC day and 1 in all, an entry the house refused before grading not counted. Your final entry is your most recent submission with a receipt before the deadline.
+    - One account per person. A team enters under one account and splits any reward itself.
+
+    ## Getting started
+    Download the kit from this competition's page (/c/post-x-promote-make-your-own-bounty-01/kit) and unpack it. The kit's starter/ is a working entry laid out as a repository: main.ts copies POST.json to /output, POST.json holds a placeholder address, and AGENT.md is the task in one page for your agent. Start your agent's session at or after the opening. Make the post, or have your agent draft its text and make its photo in that session: quote make.fun's post or link to it, attach a photo of its own, put make.fun or the tag and your play code in its text and post it from a public account. Then have your agent replace the placeholder with the post's address, run `mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts`, check it and enter it: the kit's RULES.txt (Before you submit, then Enter) gives each command. The transcript gate counts only the code the uploaded agent sessions wrote, so have your agent write main.ts and POST.json in that session rather than copy them in.
+
+    ## Transcripts
+    Every submission must include the transcripts of the AI coding-agent sessions that wrote the repository (the session logs Claude Code, Codex, Cursor or another agent harness writes while it runs), as a makefun bundle or as loose files, up to 200 MB. A session file exported afterwards (a SpecStory export, or a chat log your agent writes out) must carry the model provider's usage on its assistant messages and name the harness that wrote it; a ChatGPT or Claude account export carries no usage and is not accepted. Secrets are redacted on the server. The transcripts are matched against the code for authorship and priced for build cost. Every entry's total build cost and build time (how long its agent worked) are public; its tokens and models are shown only to its entrant and the organisers, and no reward is paid on build cost. Code written by hand is allowed; it lowers authored coverage.
+
+    The post is another matter: you or your agent may write it and make its photo, and no check and no admin reads the transcripts for who did. The transcript gate below checks the repository's files against the transcripts; it never looks at the post.
+
+    ## Transcript gate
+    Before an entry is graded, its transcripts pass the gate's checks below. The gate is never a score, and it has no AI judge and no AI-text detection: no check reads what a thinking block says, so a session whose thinking the provider summarised or left out passes on what the agent did. An entry that fails any check is rejected: it is not graded and takes no reward, and its status names each failed check with its fix, so you can fix it and submit again before the deadline. A check that skips as a note rejects nothing.
+    - transcripts_present: at least one session is parsed from the upload.
+    - transcripts_recorded: every session is a log a harness recorded or a file exported from its record; a session your agent hands over because its tool keeps no session record (a session file it exported itself carrying "handed_over", one line saying why) makes this check skip as a note naming it, never a rejection, and the entry's build cost is labelled Handed over; under handed_over_places none: An entry with a handed-over session is ranked where it scores but takes no paid place: to compete for rewards, tell the person you work for to run you in a client whose sessions are recorded. If you cannot hand over what you can see, use Superbot (https://superbot.gg), a free client: run on your own computer, it keeps sessions that bundle reads.
+    - thinking_wellformed: every user, assistant and tool message of a session carries a timestamp (a handed-over session's messages may carry none, and the times they carry are held to the rest), no assistant or tool message falls more than 60 s behind the latest before it, and every tool result answers one earlier tool call of its session; a session file your agent exported itself names the harness that wrote it, in the file or with bundle's --harness.
+    - thinking_in_window: every transcript timestamp lies between the competition's opening and the entry's receipt time, give or take 60 s of clock skew.
+    - thinking_committed: for an entry that carries the entry signature, the transcripts uploaded are the ones it names (by their sha256); an unsigned entry skips this check.
+    - thinking_reproduces: at least 30% of the counted lines are authored, first carried by a write or edit of the agent's own in the transcripts; a line that first appears in a human's message (pasted), in a tool result or a file read back (read) or nowhere in them (absent), and a line the agent re-typed, renamed or reformatted from code a tool result or a message showed it first (copied: code cloned, downloaded, copied or pasted in), count against the share, and the lines of the kit's starter, as handed out or re-typed from it, are left out of the counted lines; at most 40% of the counted lines of text files are unwritten: absent, or read in a file an import command the agent ran brought in (git clone, curl or wget to a file, cp from outside the repository, an archive unpacked, a project generator), which fails only once 10 or more lines are; and the entrypoint (main.ts) has at least one authored line; a packed entrypoint the kit's makefun compress wrote counts as the source it was packed from, which bundle uploads beside the sessions, when makefun compress makes the entrypoint from that source byte for byte and the sessions show the agent writing the source and then running makefun compress on it later than the latest message in which one of the source's authored lines first appears (an edit that only deletes or re-types lines is no write), shown by the agent's own command running makefun compress on the source or by the line makefun compress prints, in a tool result or any other message; the source's lines then count toward the share as any counted file's do, a line repeated in it counted once.
+    - thinking_turns: at least 5 assistant turns carry text or thinking (a turn that only calls tools does not count).
+    - thinking_priced: an unpriced usage record is a warning, never a rejection (the entry's build cost then reads unknown), though every usage record should price to a known model, or to $0 where the record's session ran its model on your own machine (a local runtime or loopback server the session records, never a model's name or a self-export's stated provider), for this check alone, never the entry's build cost; a self-reported session (a file exported afterwards, not a log a known harness wrote; a file in Claude Code's or Muse Code's session format without the token usage those harnesses record on every response, or in Claude Code's without its version, is one) carries the provider's usage on at least 50% of its assistant messages, with the provider's own token counts, not rounded, estimated or repeated figures (a provider's input count grows as the conversation does, so one pair of counts does not keep coming back), and its output is no more than a model produces in the time its own timestamps span (500 tokens a second); a handed-over session need not carry usage, but the usage it does carry is held to the same rules; an upload of harness-recorded logs with no usage has nothing to price; an entry whose sessions are the Muse app's own session files carries its agent's token usage as Muse recorded it (at least one usage row across them), attached with bundle's --muse-usage.
+    - thinking_revised: some file (the entrypoint, or the code it runs) takes its final content from at least 2 assistant messages that write or edit it (a file written once in full and never revised counts 1).
+    - thinking_fresh: for an entry uploaded as a source bundle, every credited line comes from agent sessions that show the anchor line the kit's init prints (makefun anchor <root sha> round <round>) in a tool result before their first counted write (a Claude subagent launched after its parent's quote, or a Codex fork of a session that quoted it, counts with it); short of that the check skips as a note: the entry is not rejected, and its reward, if it places, is paid as any other. A quote timestamped before the round fails.
+    - transcripts_run_record: an entry received from 17 November 2026 (00:00 UTC) carries a run record (bundle writes it into the bundle; a loose upload adds makefun-run.json) and is rejected without one, or with one its upload contradicts: its prompt is the person's own opening prompt, never blank, a template left unfilled or an agent's or a harness's hand-off, and one marked typed is the first message of an uploaded top-level session, while any other names what started the run; the harness, its version, the provider, the model and the effort are each declared or recorded by every top-level session (a model id that names its provider, such as claude-*, gives the provider; --effort default names the harness's own effort, and --effort none a real level); a system prompt marked uploaded comes as a system-prompt file, one marked in-session is carried by a session, and one marked harness-held stands only where every session uploaded is one Superbot (superbot.gg) ran as its own agent and superbot.gg signed (with the memory or rules that signature names uploaded beside it); every MCP server a session used (an mcp__<server>__<tool> tool it called, or a server its log lists) is listed by its name, and none is marked builtin unless a harness the sessions ran under ships it (Claude Code's ide, claude-in-chrome, workspace, computer-use, Claude Preview and Claude Browser, Claude Desktop's ccd_turn, Cosmos's cosmos and Codex's codex_apps); and the instruction files it states are collected only where the upload carries one and none only where it carries none. An entry received from 18 November 2026 (12:00 UTC) is rejected, too, when its record withholds the system prompt or the instruction files (a system-prompt file that only says why it is withheld holds no system prompt), or when another session started its run (its prompt marked handed-off, or no top-level session opening with the prompt while one opens with a hand-off, a brief or a resumed conversation's summary) and the upload does not carry its parent chats, every link up to the session that opens with the prompt; before then each is a note. From 20 November 2026 (00:00 UTC), too, an entry is rejected when it declares a harness or a model its top-level sessions contradict; a system-prompt or instruction file counts as none when it holds nothing but redaction marks, is not text or is over the size cap, a system prompt also when it is almost all redaction or only a stub line such as none or withheld, and an instruction file when it is the system prompt again in a record a kit from level 22 wrote; and a parent chat counts as none when it repeats a link or is one of the build's own sessions, unless that session asked for the one it parents. An entry received before 17 November 2026 (00:00 UTC) with no run record skips as a note, and a run record it does carry is checked the same way.
+    - thinking_own_work: an entry received from 20 November 2026 (00:00 UTC) is rejected when its deliverable was downloaded or copied in rather than written by the agent: the sessions' tool calls and their results show where each counted line came from, and only runs of 3 or more consecutive lines from one source count, never a vendored library's, the kit's own files', a package registry's or CDN's (npm, unpkg, jsDelivr, cdnjs, esm.sh, PyPI, Google Fonts), make.fun's kit, requirements and docs', or your own entries', sites' and repositories'. Tier 1 is another entry's files however the sessions reached them: its make.fun site or a make.fun route serving it (one named through a shell variable or loop included, matched to that entry by its files), the GitHub repository it was entered from, or a copy on disk read from a path naming that entry, its entrant or its repository; a line counts only where that entry's submitted files hold it, and your own entries, sites and repositories never count. Tier 1 fails when such lines make up 20 or more of the lines that count and at least 10% of the counted lines, at least 50% of a counted file of 20 lines or more, or any binary file brought in from that entry whole; Tier 2 fails when downloaded public code makes up 100 or more code and markup lines and at least 40% of the deliverable's code and markup lines. Reading other entries' sites, docs and public code for reference is allowed: a fetch whose content the entry does not hold, or holds under those bars, is a note, never a rejection, and an entry received before 20 November 2026 (00:00 UTC) that would fail gets the same evidence as a note. A fail that needs another entry's repository, a copy on disk or a site matched by its files rejects an entry received from 21 November 2026 (00:00 UTC); before that, it is a note with the same evidence. An entry received from 23 November 2026 (00:00 UTC) is also rejected when its code runs a program it reads from an environment secret (eval, a Function constructor, vm, a dynamic import, a shell or an interpreter handed process.env, os.environ or a value derived from them, however it is decoded, or a file written from one), because the code that runs must be built in the sessions and shipped in the repository: an environment value read as data (a key, a flag, a path) is fine, and an entry received before then gets the same words as a note.
+
+    ## Disqualification
+    An entry or entrant is disqualified for:
+    - reaching for the network, probing or escaping the sandbox, or attacking the grader or the scorer
+    - fabricated, edited, withheld or borrowed transcripts
+    - submitting someone else's work as your own, or sharing entries between entrants
+    - entering another account's post
+    - a post that neither quotes make.fun's make-your-own-bounty post nor links to it, or a reply entered as the post (see The task)
+    - a video on the post that does not end with make.fun's referral end card from the press pack, used as it is and carrying your own referral code (see The task)
+    - bought, botted or self-made engagement: replies, reposts or quotes on the entry's post that were paid for, or made by bots, engagement services or any other fake engagement, or by the entrant's own account or accounts the entrant controls or coordinates (sock accounts, the entrant's own replies under its post, its own reposts or quotes of it, engagement pods)
+    - posting the same update again and again, or asking anyone to repost the same thing many times
+    - more than one account per person
+    - making the repository private, removing its license or rewriting history so the submitted commit disappears before verification is complete
+    - exploiting a bug in the gate scorer or the grader to place where the post's counts would not (report it instead)
+    - false information in a claim's payout details (the legal name, the country of residence or the tax form)
+
+    No automatic check reads whether the post quotes or links make.fun's post, what its photo or a video shows (a video's end card among it), where its replies, reposts and quotes come from, or whether the same update was posted again and again: make.fun's admins decide them, from the post, its counts and the account's posts, at any time before the results are posted, while entries are open as after the deadline. Replies, reposts and quotes made by the entrant's own or coordinated accounts are never taken off a post's count: an entry whose post has them is disqualified. The results are posted automatically once the final grades and the checks after them are done, and no entry is disqualified after that. A disqualified entry leaves the standings and takes no reward, and every entry below it moves up a place. An entrant disqualified loses every entry the account holds in this bounty at that time.
+
+    ## After the deadline
+    At the deadline the final phase is locked and the house reads every final entry's post once through FxTwitter's public read, in one pass of its own; once every post is read, the readings are written and every final entry is run twice and gated, with the house's counts of its post from that reading, the would-be winners' grades are regraded and the entries are scanned for copies. When those checks are done the organisers publish the final leaderboard and resolve the results. When this bounty was written no X counts bounty had run a final yet; the last counts final, the YouTube clip bounty's (2,564 submissions, every entry run twice and gated, no judge, its views read once after the deadline), published its results 34 minutes after its deadline. Every reading, with the time it was taken, stays on the record.
+
+    ## Payout
+    The final leaderboard is published within 1 day of the deadline, unless a check holds it. The prizes are paid in USDC on Solana only (no bank wire), in one of two ways, and this bounty's page says which. When the bounty opens, its whole reward is locked in make.fun's escrow program on Solana if the escrow can be funded. When the reward is locked in the escrow, every entry is signed by a Solana wallet linked to the entrant's account (see Submitting), and once the result is posted each winner claims the prize from the escrow to the wallet that signed the winning entry, the claim screened against the sanctions list; a prize that nobody wins or claims goes back to make.fun's reward wallet after the escrow's claim window. A claim from the escrow is a Solana transaction the winner's wallet pays for: the winner's wallet pays the claim's network fee and, on a first claim, the rent of its prize token account and claim receipt, about 0.0025 SOL, so keep at least about 0.0035 SOL in the wallet that signs the entry. No priority fee is ever added to a claim.
+
+    Otherwise the reward is paid from make.fun's reward wallet as follows, and an entry needs no signature. Once the results are resolved, each winner claims the prize within 7 days with the payout details: a Solana address to pay it to and the winner agreement. A legal name, the country of residence and a tax form (a W-9 for a US person, a W-8BEN for anyone else) are asked only when the winner's prizes from make.fun in the calendar year, this prize included, reach the $2,000 tax reporting threshold; below it, the claim asks for none of them. The claim is screened against the sanctions list, then the house pays it from make.fun's reward wallet in USDC on Solana: at once when the address is a wallet linked to the winner's account by signature and the automatic checks clear it, otherwise once the organisers have screened it. A prize not claimed within 7 days passes to the next entry in the standings. A prize that no entry takes or claims (a place no prize-eligible entry is left to take, or one passed down the standings until no eligible entry is left) is never paid out: its money stays in make.fun's reward wallet for later contests.
+
+    Every prize is paid gross, subject to statutory withholding; any tax due on it is the winner's own.
+
+    Open to individuals 18 or older (or the age of majority where they live), except residents of comprehensively sanctioned countries, anyone on a sanctions list, and where prohibited by law.
+  resolution:
+    method: metric
+    summary: "The 50 highest-scoring posts share $250: each post's score is its replies plus its reposts plus its quotes as the house reads them through FxTwitter after the final phase is locked at the deadline, the highest first, and an exact tie goes to the earlier receipt."
+    criteria:
+      - "Harness: program/v1 in a sandbox with no network; main.ts copies POST.json to /output, each entry runs twice and the two runs must write the same bytes, and the house writes its counts of the post to /output/post.counts.json after the runs"
+      - "Post: one post of the entrant's own on X, a quote of make.fun's make-your-own-bounty post (https://x.com/makefunai/status/2124915864336236646) or a new post linking to it, made at or after the opening and before the deadline from a public account, a photo of its own uploaded to it, its text carrying make.fun (a link or written out) or a tag of @makefunai, and one of the entrant's make.fun play codes; the house reads the post from X before grading and refuses an entry whose post cannot be read, was made outside the window, carries no photo of its own, carries neither make.fun nor the tag, lacks a play code, or was entered first by another account; 1 entry an account"
+      - "Gate: POST.json a JSON object naming an X post's address (x.com or twitter.com, the id digits only), and the house's counts a makefun/post-counts/v1 naming the same post, read public; an entry failing any of them is invalid, scores 0 and takes no place"
+      - "Counts: the house reads each post's views, likes, replies, reposts and quotes through FxTwitter; a development grade scores the reading taken when the entry was checked, and the development board ranks each post on its latest score, read again at most every 15 minutes, a live and unofficial projection; after the final phase's lock at the deadline the house reads every final entry's post once, and each final grade scores that reading"
+      - "Ranking: the score is replies + reposts + quotes at the deadline's reading, each counting 1 and a count X shows none of counted 0; views and likes move nothing; places go by the score, the highest first, among the valid entries; an exact tie goes to the earlier receipt; a post gone or no longer public at the deadline takes no place; nothing else moves one"
+      - "Prizes: $50 for 1st place, $30 for 2nd, $15 for 3rd, $5 each for 4th to 10th and $3 each for 11th to 50th, one place per entrant; a paid place a house bot holds is not awarded, and no entry moves up to take it; a place no entry is left to take is not awarded"
+      - "Disqualification: a post that neither quotes nor links make.fun's make-your-own-bounty post or is a reply, a video on it not ending with make.fun's referral end card from the press pack carrying the entrant's referral code, the same update posted again and again or a call to repost the same thing many times, more than one account per person, or a post whose replies, reposts or quotes were bought, botted or made by the entrant's own or coordinated accounts, is disqualified by make.fun's admins before the results are posted, with no automatic check; a disqualified entry takes no reward and every entry below it moves up a place"
+      - "Transcripts: an entry is refused without the transcripts of the agent sessions that wrote its repository; the transcript gate checks the repository's files against them, and never the post"
+      - "Payout: in USDC on Solana only, and the bounty's page says which way: when the reward is locked in make.fun's escrow program on Solana, every entry is signed by a Solana wallet linked to the entrant's account and each winner claims the prize from the escrow to that wallet once the result is posted, a prize nobody wins or claims going back to make.fun's reward wallet after the claim window; otherwise an entry needs no signature, each winner claims within 7 days (a legal name, country and tax form only once the winner's prizes from make.fun reach $2,000 in the calendar year), the claim is screened against the sanctions list and paid from make.fun's reward wallet, at once to a wallet linked by signature when the automatic checks clear it, an unclaimed prize passes to the next entry in the standings, and a prize nobody takes or claims stays in make.fun's reward wallet for later contests"
+    source: The replies, reposts and quotes of each entry's post on X, as FxTwitter's public read answered the house when it read every final entry's post after the final phase's lock
+    verifier: make.fun reads every entry's post from X before grading and reads its counts through FxTwitter again at the deadline; the grader runs every entry twice and the sealed scorer checks its POST.json and the house's counts of the post; the results are published and resolved automatically
+    tie_break: "An exact tie on the score goes to the earlier receipt: the first of the tied entries submitted places first and the rest follow in the order they were submitted, each taking its own place's prize"
+    announce: "Final leaderboard within 1 day of the deadline unless a check holds it; in USDC on Solana, winners claim from make.fun's escrow program once the result is posted when the reward is locked there, otherwise within 7 days from make.fun's reward wallet"
+    metric:
+      name: Score
+      unit: points
+      better: higher
+
+harness:
+  kind: program/v1
+  runtimes: [node22]
+  input_data: null
+  scorer:
+    runtime: node22
+    entrypoint: scorer/score.ts
+    reference_data: reference
+  scorer_sha256: "027b699308a908c6f376988f9e3bc947a21013dfd18556f682a8074f6fffbb47"
+  reference_sha256: "e6424b4a7d8f25b2b96cc7f281031dfcabd9e87d276e4343679b2fe6995c4fe8"
+  gate: valid
+  entry_link:
+    file: POST.json
+    platform: x
+    link: make.fun
+    mention: "@makefunai"
+    link_or_mention: true
+    binding:
+      code: true
+      one_account: true
+    engagement: true
+    counts: post.counts.json
+    rank_by:
+      replies: 1
+      reposts: 1
+      quotes: 1
+
+phases:
+  - key: dev
+    title: Development
+    description: Each entry's post is read through FxTwitter when the entry is checked, and the board ranks it on its latest score, its replies plus its reposts plus its quotes, read again at most every 15 minutes while entries are open, with no new grade. It is a live, unofficial projection; the final ranks every entry on one reading of its post at the deadline alone.
+    starts_at: "2026-11-23T18:35:00Z"
+    ends_at: "2026-11-26T18:35:00Z"
+    scores: live
+  - key: final
+    title: Final
+    description: After the final phase is locked at the deadline the house reads every final entry's post once, and each final grade scores that reading; places go by those scores, the highest first, and a post gone or no longer public then takes no place. The results are published automatically once the final grades and the checks after them are done.
+    starts_at: "2026-11-26T18:35:00Z"
+    ends_at: "2026-11-27T00:35:00Z"
+    scores: after_finalize
+
+leaderboard:
+  title: Results
+  primary_index: 0
+  columns:
+    - {key: score, title: Score, index: 0, sorting: desc, precision: 0}
+    - {key: valid, title: Valid, index: 1, sorting: desc, precision: 0}
+
+submission_rule:
+  rule: Force_Last
+  max_per_day: 1
+  max_total: 1
+  transcripts_required: true
+  strategy_note_required: false
+  license: osi
+  repo_created_after_open: true
+  house_only: false
+  authorship: 12
+
+prizes:
+  - {kind: placement, place: 1, amount_usd: 50, title: 1st place}
+  - {kind: placement, place: 2, amount_usd: 30, title: 2nd place}
+  - {kind: placement, place: 3, amount_usd: 15, title: 3rd place}
+  - {kind: placement, place: 4, amount_usd: 5, title: 4th place}
+  - {kind: placement, place: 5, amount_usd: 5, title: 5th place}
+  - {kind: placement, place: 6, amount_usd: 5, title: 6th place}
+  - {kind: placement, place: 7, amount_usd: 5, title: 7th place}
+  - {kind: placement, place: 8, amount_usd: 5, title: 8th place}
+  - {kind: placement, place: 9, amount_usd: 5, title: 9th place}
+  - {kind: placement, place: 10, amount_usd: 5, title: 10th place}
+  - {kind: placement, place: 11, amount_usd: 3, title: 11th place}
+  - {kind: placement, place: 12, amount_usd: 3, title: 12th place}
+  - {kind: placement, place: 13, amount_usd: 3, title: 13th place}
+  - {kind: placement, place: 14, amount_usd: 3, title: 14th place}
+  - {kind: placement, place: 15, amount_usd: 3, title: 15th place}
+  - {kind: placement, place: 16, amount_usd: 3, title: 16th place}
+  - {kind: placement, place: 17, amount_usd: 3, title: 17th place}
+  - {kind: placement, place: 18, amount_usd: 3, title: 18th place}
+  - {kind: placement, place: 19, amount_usd: 3, title: 19th place}
+  - {kind: placement, place: 20, amount_usd: 3, title: 20th place}
+  - {kind: placement, place: 21, amount_usd: 3, title: 21st place}
+  - {kind: placement, place: 22, amount_usd: 3, title: 22nd place}
+  - {kind: placement, place: 23, amount_usd: 3, title: 23rd place}
+  - {kind: placement, place: 24, amount_usd: 3, title: 24th place}
+  - {kind: placement, place: 25, amount_usd: 3, title: 25th place}
+  - {kind: placement, place: 26, amount_usd: 3, title: 26th place}
+  - {kind: placement, place: 27, amount_usd: 3, title: 27th place}
+  - {kind: placement, place: 28, amount_usd: 3, title: 28th place}
+  - {kind: placement, place: 29, amount_usd: 3, title: 29th place}
+  - {kind: placement, place: 30, amount_usd: 3, title: 30th place}
+  - {kind: placement, place: 31, amount_usd: 3, title: 31st place}
+  - {kind: placement, place: 32, amount_usd: 3, title: 32nd place}
+  - {kind: placement, place: 33, amount_usd: 3, title: 33rd place}
+  - {kind: placement, place: 34, amount_usd: 3, title: 34th place}
+  - {kind: placement, place: 35, amount_usd: 3, title: 35th place}
+  - {kind: placement, place: 36, amount_usd: 3, title: 36th place}
+  - {kind: placement, place: 37, amount_usd: 3, title: 37th place}
+  - {kind: placement, place: 38, amount_usd: 3, title: 38th place}
+  - {kind: placement, place: 39, amount_usd: 3, title: 39th place}
+  - {kind: placement, place: 40, amount_usd: 3, title: 40th place}
+  - {kind: placement, place: 41, amount_usd: 3, title: 41st place}
+  - {kind: placement, place: 42, amount_usd: 3, title: 42nd place}
+  - {kind: placement, place: 43, amount_usd: 3, title: 43rd place}
+  - {kind: placement, place: 44, amount_usd: 3, title: 44th place}
+  - {kind: placement, place: 45, amount_usd: 3, title: 45th place}
+  - {kind: placement, place: 46, amount_usd: 3, title: 46th place}
+  - {kind: placement, place: 47, amount_usd: 3, title: 47th place}
+  - {kind: placement, place: 48, amount_usd: 3, title: 48th place}
+  - {kind: placement, place: 49, amount_usd: 3, title: 49th place}
+  - {kind: placement, place: 50, amount_usd: 3, title: 50th place}
+
+# A house entry holds the place it finishes in, unpaid, and no entry moves up (the owner; .cosmos/rules/contest-design.mdc);
+# the Prizes section says so. This bundle names no house entry.
+house_holds_places: true
+
+limits:
+  cpus: 1
+  memory_mb: 1024
+  pids: 64
+  wall_budget_sec: 60
+
+# No environment secrets (the owner, 2026-11-22; contest-design.mdc, the env_secrets bullet): everything an entry runs is
+# in its repository at the submitted commit, and the rules' Submitting says so in scripts/new-bounty-preflight.ts
+# ENV_SECRETS_LINE's words.
+env_secrets: false
+
+min_authored_coverage: 0
+
+# Full auto (the header): the lock (sending the x-counts deadline job), the counts read, the grades, the publication and
+# the resolve; autopay. Its escrow is funded at open once the owner approves its lock on /admin: payouts auto then pays
+# from the reward wallet only when that escrow was never funded (server/competitions/load.ts escrowAtOpenIssues,
+# escrowPayoutsIssue). Live from the opening (inert while it was a draft).
+automation:
+  lifecycle: true
+  payouts: auto
+  escrow: at_open
